@@ -6,4 +6,6 @@
 
     <color name="buttonColor">#303F9F</color>
     <color name="buttonTextColor">#ffffff</color>
+    <color name="empty_view">#df0000</color>
+    <color name="price">#359f00</color>
 </resources>

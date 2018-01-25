@@ -44,8 +44,6 @@ public class BookAdapter extends ArrayAdapter<Book> {
         ImageView imgView = (ImageView) listItemView.findViewById(R.id.image);
         String imgUri = currentBook.getImg();
         Picasso.with(getContext()).load(imgUri)
-                .centerCrop()
-                .placeholder(R.mipmap.ic_launcher_foreground)
                 .into(imgView);
 
         TextView nameView = (TextView) listItemView.findViewById(R.id.name);
@@ -54,15 +52,16 @@ public class BookAdapter extends ArrayAdapter<Book> {
         TextView authorView = (TextView) listItemView.findViewById(R.id.author);
         authorView.setText(currentBook.getAuthor());
 
+        ratingsView = (TextView) listItemView.findViewById(R.id.ratings);
         if(currentBook.getRatings() != NULL){
-            ratingsView = (TextView) listItemView.findViewById(R.id.ratings);
             ratingsView.setText(currentBook.getRatings() + "");
         }
         else{
             ratingsView.setVisibility(View.GONE);
         }
+
+        priceView = (TextView) listItemView.findViewById(R.id.price);
         if(currentBook.getPrice() != NULL){
-            priceView = (TextView) listItemView.findViewById(R.id.price);
             priceView.setText("INR " + currentBook.getPrice());
         }
         else{

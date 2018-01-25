@@ -163,8 +163,17 @@ public final class Utilis {
                 JSONObject currentBook = bookArray.getJSONObject(i);
                 JSONObject volumeInfo = currentBook.getJSONObject("volumeInfo");
                 String title = volumeInfo.getString("title");
-                JSONArray authorArray = volumeInfo.getJSONArray("authors");
-                String author = authorArray.getString(0);
+
+                JSONArray authorArray = null;
+                String author;
+                if(volumeInfo.has("authors")){
+                    authorArray = volumeInfo.getJSONArray("authors");
+                    author = authorArray.getString(0);
+                }
+                else{
+                    Log.e(LOG_TAG, "authorsArray = null");
+                    author = "No authors";
+                }
 
                 double rating = NULL;
                 if (volumeInfo.has("averageRating")){
@@ -173,8 +182,11 @@ public final class Utilis {
 
                 String url = volumeInfo.getString("previewLink");
 
-                JSONObject imgInfo = volumeInfo.getJSONObject("imageLinks");
-                String img = imgInfo.getString("smallThumbnail");
+                String img = "http://www.safeeindia.org/safee-ex/noimage.jpg";
+                if(volumeInfo.has("imageLinks")){
+                    JSONObject imgInfo = volumeInfo.getJSONObject("imageLinks");
+                    img = imgInfo.getString("smallThumbnail");
+                }
 
                 double price = NULL;
                 JSONObject saleInfo = currentBook.getJSONObject("saleInfo");

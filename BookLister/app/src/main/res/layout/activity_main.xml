@@ -37,10 +37,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:layout_weight="1"
-            android:onClick="searchMethod"
             android:background="@color/buttonColor"
-            android:textColor="@color/buttonTextColor"
-            android:text="SEARCH" />
+            android:onClick="searchMethod"
+            android:text="SEARCH"
+            android:textColor="@color/buttonTextColor" />
 
     </LinearLayout>
 
@@ -50,6 +50,7 @@
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:divider="@android:color/black"
+        android:dividerHeight="1dp"
         android:transcriptMode="alwaysScroll"
         tools:listitem="@layout/item_book" />
 
@@ -58,7 +59,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:textAppearance="?android:textAppearanceMedium" />
+        android:textAppearance="?android:textAppearanceMedium"
+        android:textColor="@color/empty_view" />
 
     <ProgressBar
         android:id="@+id/progressBar"

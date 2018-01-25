@@ -27,8 +27,9 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
     private BookAdapter mAdapter;
     private TextView mEmptyStateTextView;
     private EditText simpleEditText;
-    private String strValue;
+    private String strValue ;
     private View loadingIndicator;
+    private boolean isRunning = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +64,12 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
         simpleEditText = findViewById(R.id.text);
         strValue = simpleEditText.getText().toString();
         Log.e(LOG_TAG, strValue);
-        if (strValue == null) {
-            Toast.makeText(getApplicationContext(), "Enter a book you want to search...", Toast.LENGTH_SHORT).show();
+        if (strValue.length() < 1 || strValue == null) {
+            Toast.makeText(getApplicationContext(), "Enter a valid book name..", Toast.LENGTH_SHORT).show();
         } else {
-            mAdapter.clear();
+            if(isRunning == true){
+                mAdapter.clear();
+            }
             try {
                 REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=" + java.net.URLEncoder.encode(strValue, "UTF-8") + "&maxResults=10";
                 onLoad();
@@ -84,7 +87,12 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
         if (isConnected) {
             loadingIndicator.setVisibility(View.VISIBLE);
             LoaderManager loaderManager = getLoaderManager();
-            loaderManager.initLoader(BOOK_LOADER_ID, null, this);
+            if(isRunning == false){
+                isRunning = true;
+                loaderManager.initLoader(BOOK_LOADER_ID, null, this);
+            } else{
+                loaderManager.restartLoader(BOOK_LOADER_ID, null, this);
+            }
         } else {
             loadingIndicator.setVisibility(View.GONE);
             mEmptyStateTextView.setText(R.string.no_internet_connection);
