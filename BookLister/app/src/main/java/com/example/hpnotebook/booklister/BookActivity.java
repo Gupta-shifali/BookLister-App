@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,9 +62,11 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
     private void searchMethod(){
         simpleEditText = findViewById(R.id.text);
         strValue = simpleEditText.getText().toString();
+        Log.e(LOG_TAG, strValue);
         if (strValue == null) {
             Toast.makeText(getApplicationContext(), "Enter a book you want to search...", Toast.LENGTH_SHORT).show();
         } else {
+            mAdapter.clear();
             try {
                 REQUEST_URL = "https://www.googleapis.com/books/v1/volumes?q=" + java.net.URLEncoder.encode(strValue, "UTF-8") + "&maxResults=10";
                 onLoad();

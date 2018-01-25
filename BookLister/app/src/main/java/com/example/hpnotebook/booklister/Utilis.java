@@ -18,6 +18,8 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.sql.Types.NULL;
+
 /**
  * Created by Hp Notebook on 22-01-2018.
  */
@@ -37,12 +39,13 @@ public final class Utilis {
 
     public static List<Book> fetchBookData(String requestUrl) {
 
-        /** to test progressbar view - 2sec delay is given */
+        /** to test progressbar view - 2sec delay is given
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+         */
 
         // Create URL object
         URL url = createUrl(requestUrl);
@@ -162,16 +165,23 @@ public final class Utilis {
                 String title = volumeInfo.getString("title");
                 JSONArray authorArray = volumeInfo.getJSONArray("authors");
                 String author = authorArray.getString(0);
-                double rating = volumeInfo.getDouble("averageRating");
+
+                double rating = NULL;
+                if (volumeInfo.has("averageRating")){
+                    rating = volumeInfo.getDouble("averageRating");
+                }
+
                 String url = volumeInfo.getString("previewLink");
 
                 JSONObject imgInfo = volumeInfo.getJSONObject("imageLinks");
                 String img = imgInfo.getString("smallThumbnail");
 
+                double price = NULL;
                 JSONObject saleInfo = currentBook.getJSONObject("saleInfo");
-                JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
-                double price = retailPrice.getDouble("amount");
-
+                if (saleInfo.has("retailPrice")){
+                    JSONObject retailPrice = saleInfo.getJSONObject("retailPrice");
+                    price = retailPrice.getDouble("amount");
+                }
                 Book book = new Book(img, title, author, rating, price, url);
                 books.add(book);
             }
