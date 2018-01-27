@@ -37,7 +37,8 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
     private List<Book> books_list;
 
     private Parcelable state = null;
-    private String LIST_STATE = "listState";
+    private static final String LIST_STATE = "listState";
+    private static final String BOOKLIST_SCROLL_POSITION = "Position of Scroll";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,15 +55,6 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
 
         loadingIndicator = findViewById(R.id.progressBar);
         loadingIndicator.setVisibility(View.GONE);
-
-        // Save the ListView state (= includes scroll position) as a Parceble
-        state = bookListView.onSaveInstanceState();
-
-        // e.g. set new items
-        bookListView.setAdapter(mAdapter);
-
-        // Restore previous state (including selected item index and scroll position)
-        bookListView.onRestoreInstanceState(state);
 
         onSearch();
     }
@@ -146,6 +138,7 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
         // Saving custom values into the bundle
         outState.putString("strValue", strValue);
         outState.putParcelableArrayList(LIST_STATE, (ArrayList<Book>) books_list);
+        outState.putInt(BOOKLIST_SCROLL_POSITION, bookListView.getFirstVisiblePosition());
         // Calling the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(outState);
     }
@@ -153,12 +146,16 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
 
-        // Calling the superclass so it can restore the view hierarchy
-        //super.onRestoreInstanceState(savedInstanceState);
-
         // Restoring state members from saved instance
         strValue = savedInstanceState.getString("strValue");
         books_list = savedInstanceState.getParcelableArrayList(LIST_STATE);
+        int position = savedInstanceState.getInt(BOOKLIST_SCROLL_POSITION);
+        if (books_list != null && !books_list.isEmpty()) {
+            mAdapter.addAll(books_list);
+            bookListView.setSelection(position);
+        } else if (simpleEditText != null) {
+            mEmptyStateTextView.setText(R.string.no_books);
+        }
     }
 }
 
