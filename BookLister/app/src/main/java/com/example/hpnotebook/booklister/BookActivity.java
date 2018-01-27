@@ -124,6 +124,7 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(Loader<List<Book>> loader, List<Book> books) {
 
+        books_list = books;
         View loadingIndicator = findViewById(R.id.progressBar);
         loadingIndicator.setVisibility(View.GONE);
         mAdapter.clear();
@@ -157,7 +158,7 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Restoring state members from saved instance
         strValue = savedInstanceState.getString("strValue");
-        books_list = (ArrayList<Book>) savedInstanceState.getParcelableArrayList(LIST_STATE);
+        books_list = savedInstanceState.getParcelableArrayList(LIST_STATE);
     }
 }
 
