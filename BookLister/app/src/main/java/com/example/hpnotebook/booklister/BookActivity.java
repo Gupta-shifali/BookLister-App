@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>> {
+public class BookActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<Book>>{
 
     private static final String LOG_TAG = BookActivity.class.getName();
     private static final int BOOK_LOADER_ID = 1;
@@ -33,8 +34,10 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
     private boolean isRunning = false;
     private ListView bookListView;
 
+    private List<Book> books_list;
+
     private Parcelable state = null;
-    private static final String LIST_STATE = "listState";
+    private String LIST_STATE = "listState";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,7 +144,7 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Saving custom values into the bundle
         outState.putString("strValue", strValue);
-
+        outState.putParcelableArrayList(LIST_STATE, (ArrayList<Book>) books_list);
         // Calling the superclass so it can save the view hierarchy state
         super.onSaveInstanceState(outState);
     }
@@ -154,6 +157,7 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Restoring state members from saved instance
         strValue = savedInstanceState.getString("strValue");
+        books_list = (ArrayList<Book>) savedInstanceState.getParcelableArrayList(LIST_STATE);
     }
 }
 

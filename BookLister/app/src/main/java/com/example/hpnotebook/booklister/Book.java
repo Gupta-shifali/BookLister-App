@@ -1,10 +1,17 @@
 package com.example.hpnotebook.booklister;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.jar.Pack200;
+
 /**
  * Created by Hp Notebook on 21-01-2018.
  */
 
-public class Book {
+public class Book implements Parcelable{
+
+    Parcelable.Creator CREATOR;
     private String img;
     private String name;
     private String author;
@@ -43,5 +50,15 @@ public class Book {
 
     public String getUrl() {
         return url;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+
     }
 }
