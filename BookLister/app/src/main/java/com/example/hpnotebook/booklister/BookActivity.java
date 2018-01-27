@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Loader;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,15 +31,17 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
     private String strValue ;
     private View loadingIndicator;
     private boolean isRunning = false;
+    private ListView bookListView;
+
+    private Parcelable state = null;
+    private static final String LIST_STATE = "listState";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        onSearch();
-
-        ListView bookListView = findViewById(R.id.listView);
+        bookListView = findViewById(R.id.listView);
         mAdapter = new BookAdapter(this, new ArrayList<Book>());
         bookListView.setAdapter(mAdapter);
 
@@ -48,6 +51,17 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
 
         loadingIndicator = findViewById(R.id.progressBar);
         loadingIndicator.setVisibility(View.GONE);
+
+        // Save the ListView state (= includes scroll position) as a Parceble
+        state = bookListView.onSaveInstanceState();
+
+        // e.g. set new items
+        bookListView.setAdapter(mAdapter);
+
+        // Restore previous state (including selected item index and scroll position)
+        bookListView.onRestoreInstanceState(state);
+
+        onSearch();
     }
 
     private void onSearch() {
@@ -122,5 +136,24 @@ public class BookActivity extends AppCompatActivity implements LoaderManager.Loa
         mAdapter.clear();
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        // Saving custom values into the bundle
+        outState.putString("strValue", strValue);
+
+        // Calling the superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+
+        // Calling the superclass so it can restore the view hierarchy
+        //super.onRestoreInstanceState(savedInstanceState);
+
+        // Restoring state members from saved instance
+        strValue = savedInstanceState.getString("strValue");
+    }
 }
 

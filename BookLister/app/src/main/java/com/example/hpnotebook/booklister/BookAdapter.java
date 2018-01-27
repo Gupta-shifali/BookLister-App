@@ -62,7 +62,7 @@ public class BookAdapter extends ArrayAdapter<Book> {
 
         priceView = (TextView) listItemView.findViewById(R.id.price);
         if(currentBook.getPrice() != NULL){
-            priceView.setText("INR " + currentBook.getPrice());
+            priceView.setText("₹ " + currentBook.getPrice());
         }
         else{
             priceView.setVisibility(View.GONE);
