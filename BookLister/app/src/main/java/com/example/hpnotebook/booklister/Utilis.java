@@ -39,14 +39,6 @@ public final class Utilis {
 
     public static List<Book> fetchBookData(String requestUrl) {
 
-        /** to test progressbar view - 2sec delay is given
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-         */
-
         // Create URL object
         URL url = createUrl(requestUrl);
 
@@ -58,11 +50,11 @@ public final class Utilis {
             Log.e(LOG_TAG, "Problem making the HTTP request.", e);
         }
 
-        // Extract relevant fields from the JSON response and create a list of {@link Earthquake}s
-        List<Book> earthquakes = extractFeatureFromJson(jsonResponse);
+        // Extract relevant fields from the JSON response and create a list of {@link Book}s
+        List<Book> books = extractFeatureFromJson(jsonResponse);
 
-        // Return the list of {@link Earthquake}s
-        return earthquakes;
+        // Return the list of {@link Book}s
+        return books;
     }
 
     /**
@@ -108,7 +100,7 @@ public final class Utilis {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the earthquake JSON results.", e);
+            Log.e(LOG_TAG, "Problem retrieving the book JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -152,7 +144,7 @@ public final class Utilis {
             return null;
         }
 
-        // Create an empty ArrayList that we can start adding earthquakes to
+        // Create an empty ArrayList that we can start adding books to
         List<Book> books = new ArrayList<>();
 
         try {
